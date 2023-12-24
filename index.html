@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+  </head>
+  <body>
+    
+    <div class="container">
+      <div class="ip-address">
+        <h1>IP Address Tracker</h1>
+        <div class="ip-input">
+          <input type="text" placeholder="Search for Ip address" />
+          <button>
+            <img src="/images/icon-arrow.svg" alt="" />
+          </button>
+        </div>
+        <div class="info-box">
+          <div class="ipAddress">
+            <h3>IP ADDRESS</h3>
+            <h2 class="address">192.212.174.101</h2>
+          </div>
+          <div class="ipLocation">
+            <h3>LOCATION</h3>
+            <h2 class="location">Brooklyn,NY 1011</h2>
+          </div>
+          <div class="ipTimezone">
+            <h3>TIMEZONE</h3>
+            <h2 class="timezone">UTC -05:00</h2>
+          </div>
+          <div class="isIsp">
+            <h3>ISP</h3>
+            <h2 class="isp">SpaceX Starlink</h2>
+          </div>
+        </div>
+        
+      </div>
+      
+    </div>
+    <div id="map"></div>
+    
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
