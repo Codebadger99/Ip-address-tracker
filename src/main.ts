@@ -20,14 +20,21 @@ import "@fontsource/rubik/700.css";
 // Dom
 const ipInput = <HTMLInputElement>document.querySelector("input");
 const button = <HTMLButtonElement>document.querySelector("button");
-const ipAddress = <HTMLParagraphElement>document.querySelector(".address");
-const ipLocation = <HTMLParagraphElement>document.querySelector(".location");
-const ipTimezone = <HTMLParagraphElement>document.querySelector(".timezone");
-const ipIsp = <HTMLParagraphElement>document.querySelector(".isp");
+const ipAddress = <HTMLSpanElement>document.querySelector("#ip-info");
+const ipLocation = <HTMLParagraphElement>(
+  document.querySelector("#location-info")
+);
+const ipTimezone = <HTMLParagraphElement>(
+  document.querySelector("#timezone-info")
+);
+const ipIsp = <HTMLParagraphElement>document.querySelector("#isp-info");
+const form = <HTMLFormElement>document.querySelector("form");
 
 let lat: number;
 let lng: number;
 let mymap: Map;
+let setLat: number;
+let setLng: number;
 
 interface location {
   ip: string;
@@ -41,7 +48,71 @@ interface location {
   };
 }
 
+interface geolocation{
+  ip: string
+  city: string
+  region: string
+  country: string
+  timezone: string
+  org: string
+}
+
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(function (position) {
+    setLat = position.coords.latitude;
+    setLng = position.coords.longitude;
+    const options: MapOptions = {
+      center: latLng(setLat, setLng),
+      zoom: 12,
+    };
+    mymap = map("map", options).setView([setLat, setLng], 13);
+
+    tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(mymap);
+
+    const mapIcon = icon({
+      iconUrl: "/images/icon-location.svg",
+    });
+
+    marker([setLat, setLng], { icon: mapIcon }).addTo(mymap);
+
+    circle([setLat, setLng], {
+      color: "blue",
+      fillColor: "#39B6FF",
+      fillOpacity: 0.5,
+      radius: 500,
+    }).addTo(mymap);
+
+    popup()
+      .setLatLng([setLat, setLng])
+      .setContent("This is where you are located try to zoom")
+      .openOn(mymap);
+    try {
+      axios
+        .get<geolocation>(`https://ipinfo.io/json?token=${import.meta.env.VITE_IPinfo_token}`)
+        .then((response) => {
+          const data = response.data;
+          ipAddress.textContent = data.ip;
+          ipLocation.textContent =
+            data.city + " , " + data.region + " , " + data.country;
+          ipTimezone.textContent = data.timezone;
+          ipIsp.textContent = data.org;
+        });
+    } catch (error: any) {
+      console.error("Error fetching IP information: ", error.message);
+    }
+  });
+} else {
+  console.log("Geolocation is not supported by this browser.");
+}
+
 button.addEventListener("click", () => {
+  form.addEventListener("submit", (e: Event) => {
+    e.preventDefault();
+  });
   function isValidIpAddress(ipAddress: string) {
     // Simple validation: Check if the input looks like a valid IPv4 address
     const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
@@ -113,7 +184,7 @@ button.addEventListener("click", () => {
 
         popup()
           .setLatLng([lat, lng])
-          .setContent("This is where you are located")
+          .setContent("This is where you are located try to zoom")
           .openOn(mymap);
       });
   } else {

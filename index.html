@@ -7,36 +7,41 @@
     <title>Vite + TS</title>
   </head>
   <body>
-    <div class="container">
-      <div class="ip-address">
-        <h1>IP Address Tracker</h1>
-        <div class="ip-input">
-          <input type="text" placeholder="Search for Ip address" />
-          <button>
-            <img src="/images/icon-arrow.svg" alt="" />
+    <main>
+      <div class="top">
+        <h1 class="title">IP Address Tracker</h1>
+        <form action="" autocomplete="off">
+          <input
+            type="text"
+            id="ip-input"
+            autofocus
+            placeholder="Search for any IP address or domain"
+          />
+          <button type="submit">
+            <img src="/images/icon-arrow.svg" alt="Submit Button" />
           </button>
-        </div>
-        <div class="info-box">
-          <div class="ipAddress">
-            <span>IP ADDRESS</span>
-            <p class="address">192.212.174.101</p>
+        </form>
+        <div class="info" id="info">
+          <div class="box ip-info-box">
+            <span class="field-name">ip address</span>
+            <span class="info-field" id="ip-info"></span>
           </div>
-          <div class="ipLocation">
-            <span>LOCATION</span>
-            <p class="location">Brooklyn,NY 1011</p>
+          <div class="box location-info-box">
+            <span class="field-name">location</span>
+            <span class="info-field" id="location-info"></span>
           </div>
-          <div class="ipTimezone">
-            <span>TIMEZONE</span>
-            <p class="timezone">UTC -05:00</p>
+          <div class="box timezone-info-box">
+            <span class="field-name">timezone</span>
+            <span class="info-field" id="timezone-info"></span>
           </div>
-          <div class="isIsp">
-            <span>ISP</span>
-            <p class="isp">SpaceX Starlink</p>
+          <div class="box isp-info-box">
+            <span class="field-name">isp</span>
+            <span class="info-field" id="isp-info"></span>
           </div>
         </div>
       </div>
-    </div>
-    <div id="map"></div>
+      <div id="map"></div>
+    </main>
 
     <script type="module" src="/src/main.ts"></script>
   </body>
